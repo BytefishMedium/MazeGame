@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body{
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script src="../../maze_files/mazeArray51.js"></script>
+  <script>
+    let canvas = document.getElementById("canvas")
+    let context = canvas.getContext('2d')
+
+    let borderWidth = Math.min(window.innerWidth, window.innerHeight)
+
+    borderWidth = Math.max(borderWidth, 600)
+
+    canvas.width = borderWidth
+    canvas.height = borderWidth
+
+    let roadWidth = borderWidth / mazeArray[0].length
+    let roadHeight = borderWidth / mazeArray.length
+
+    function renderMaze(context, mazeArray) {
+      for (let i = 0; i < mazeArray.length; i++) {
+        for (let j = 0; j < mazeArray[i].length; j++) {
+          context.beginPath();
+
+          context.rect(j * roadWidth, i * roadHeight, roadWidth, roadHeight)
+
+          context.fillStyle = mazeArray[i][j] === 0 ? 'white' : '#3581fc';
+          context.fill();
+
+          context.closePath()
+        }
+      }
+    }
+
+    renderMaze(context, mazeArray)
+  </script>
+  <script src="./MazeSolver.v6.js"></script>
+  <script>
+    let mazeSolver = new MazeSolver(mazeArray)
+    let path = mazeSolver.solveMaze()
+
+    path.forEach(position => {
+      context.beginPath();
+
+          context.rect(position.x * roadWidth, position.y * roadHeight, roadWidth, roadHeight)
+
+          context.fillStyle = 'yellow';
+          context.fill();
+
+          context.closePath()
+    });
+
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<canvas id="canvas"></canvas>
+<script src="../../maze_files/mazeArray51.js"></script>
+<script>
+  let canvas = document.getElementById('canvas')
+  let context = canvas.getContext('2d')
+
+  // 确保是正方形的，填充窗口却不会移除屏幕
+  let borderWidth = Math.min(window.innerWidth, window.innerHeight)
+  // 确保至少500像素
+  borderWidth = Math.max(borderWidth, 600)
+
+  // 重置canvas的宽度和高度
+  canvas.width = borderWidth
+  canvas.height = borderWidth
+
+  let roadWidth = borderWidth / mazeArray[0].length
+  let roadHeight = borderWidth / mazeArray.length
+
+  function renderMaze (context, mazeArray) {
+    for (let i = 0; i < mazeArray.length; i++) {
+      for (let j = 0; j < mazeArray[i].length; j++) {
+        context.beginPath()
+
+        // 每个正方形的变长是4，横坐标是j*4，纵坐标是i*4
+        context.rect(j * roadWidth, i * roadHeight, roadWidth, roadHeight)
+
+        context.fillStyle = mazeArray[i][j] === 0 ? 'white' : '#3581fc'
+        context.fill()
+
+        context.closePath()
+      }
+    }
+  }
+
+  renderMaze(context, mazeArray)
+</script>
+<script src="./MazeSolver.v3.js"></script>
+<script>
+  let mazeSolver = new MazeSolver(mazeArray)
+  let path = mazeSolver.solveMaze()
+  console.log('path:' , path)
+  path.forEach(position => {
+    context.beginPath()
+
+    // 每个正方形的变长是4，横坐标是j*4，纵坐标是i*4
+    context.rect(position.x * roadWidth, position.y * roadHeight, roadWidth, roadHeight)
+
+    context.fillStyle = 'yellow'
+    context.fill()
+
+    context.closePath()
+  })
+
+  function drawDetailedPath (detailedPath, index) {
+    let item = detailedPath[index]
+    setTimeout(() => {
+      context.beginPath()
+      context.rect(item.position.x * roadWidth, item.position.y * roadWidth, roadWidth, roadWidth)
+      context.fillStyle = item.type === 'enter' ? 'red' : 'white'
+      context.fill()
+      context.closePath()
+
+      if (index + 1 < detailedPath.length)
+        drawDetailedPath(detailedPath, index + 1)
+    }, 20)
+  }
+
+  drawDetailedPath(mazeSolver.detailedPath, 0)
+
+</script>
+</body>
+
+</html>

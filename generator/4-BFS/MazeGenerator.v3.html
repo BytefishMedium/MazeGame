@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body{
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    let canvas = document.getElementById('canvas')
+    let context = canvas.getContext('2d')
+
+    // 确保是正方形的，填充窗口却不会移除屏幕
+    let borderWidth = Math.min(window.innerWidth, window.innerHeight)
+    // 确保至少500像素
+    borderWidth = Math.max(borderWidth, 600)
+
+    // 重置canvas的宽度和高度
+    canvas.width = borderWidth
+    canvas.height = borderWidth
+  </script>
+<script src="./MazeGenerator.v3.js"></script>
+<script>
+  let mazeGenerator = new MazeGenerator(51, 51, canvas)
+  mazeGenerator.renderMaze()
+  mazeGenerator.generateAndRender()
+</script>
+</body>
+
+</html>

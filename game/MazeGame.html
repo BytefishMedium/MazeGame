@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            text-align: center;
+        }
+    </style>
+    <link rel="stylesheet" href="./MazeGame.css">
+</head>
+
+<body>
+<ul class="options">
+    <li class="button" id="new_maze">new maze</li>
+    <li class="button" id="reset_game">reset game</li>
+    <li class="button" id="find_path">find path</li>
+</ul>
+<canvas id="canvas"></canvas>
+<script src="./MazeGenerator.js"></script>
+<script src="../solution/DFS-Recursive/MazeSolver.v7.js"></script>
+<script>
+  let mazeWidth = 51
+  let mazeArray = new MazeGenerator(mazeWidth, mazeWidth).generate()
+</script>
+<script>
+  let canvas = document.getElementById('canvas')
+  let context = canvas.getContext('2d')
+
+  // 确保是正方形的，填充窗口却不会移除屏幕
+  let borderWidth = Math.min(window.innerWidth, window.innerHeight - canvas.offsetTop - 10)
+  // 确保至少600像素
+  borderWidth = Math.max(borderWidth, 400)
+
+  // 重置canvas的宽度和高度
+  canvas.width = borderWidth
+  canvas.height = borderWidth
+
+  let roadWidth = borderWidth / mazeArray[0].length
+  let roadHeight = borderWidth / mazeArray.length
+
+  function renderMaze (context, mazeArray) {
+    for (let i = 0; i < mazeArray.length; i++) {
+      for (let j = 0; j < mazeArray[i].length; j++) {
+        context.beginPath()
+
+        // 每个正方形的变长是4，横坐标是j*4，纵坐标是i*4
+        context.rect(j * roadWidth, i * roadHeight, roadWidth, roadHeight)
+
+        context.fillStyle = mazeArray[i][j] === 0 ? 'white' : 'blue'
+        context.fill()
+
+        context.closePath()
+      }
+    }
+  }
+
+  renderMaze(context, mazeArray)
+</script>
+
+<script>
+  let mazeSolver = new MazeSolver(mazeArray)
+  let path = mazeSolver.solveMaze()
+
+  function drawPath(context, path){
+    path.forEach(position => {
+      context.beginPath();
+
+      // 每个正方形的变长是4，横坐标是j*4，纵坐标是i*4
+      context.rect(position.x * roadWidth, position.y * roadHeight, roadWidth, roadHeight)
+
+      context.fillStyle = 'yellow';
+      context.fill();
+
+      context.closePath()
+    });
+  }
+</script>
+<script>
+    document.getElementById("new_maze").onclick = function (){
+
+      mazeArray = new MazeGenerator(mazeWidth, mazeWidth).generate()
+      renderMaze(context, mazeArray)
+    }
+
+    document.getElementById('reset_game').onclick = function (){
+      renderMaze(context, mazeArray)
+    }
+
+    document.getElementById("find_path").onclick = function () {
+      let mazeSolver = new MazeSolver(mazeArray)
+      let path = mazeSolver.solveMaze()
+      drawPath(path)
+    }
+</script>
+
+<script>
+    let playerPosition = {x: 0, y: 1}
+    function renderPoint(position){
+      context.beginPath();
+
+      context.arc(position.x * roadWidth + 0.5 * roadWidth,
+        position.y * roadHeight + 0.5 * roadHeight,
+        roadWidth * 0.5, 0, Math.PI * 2)
+
+      context.fillStyle = 'black';
+      context.fill();
+
+      context.closePath()
+    }
+    function clearPoint(position){
+      context.clearRect(position.x * roadWidth, position.y * roadWidth, roadWidth, roadWidth)
+    }
+    renderPoint(playerPosition)
+
+    function isLegalRoad(mazeArray, position){
+
+      if (position.x < 0 || position.y >= mazeArray[0].length) {
+        return false
+      }
+
+      if (position.y < 0 || position.y >= mazeArray.length) {
+        return false
+      }
+
+      if (mazeArray[position.y][position.x] === 1) {
+        return false
+      }
+
+      return true
+    }
+
+    window.onkeydown = function (event){
+      console.log(event)
+      let newPlayerPosition = null;
+      switch (event.code) {
+        case "ArrowRight":
+          newPlayerPosition = {
+            x: playerPosition.x + 1,
+            y: playerPosition.y
+          }
+          break;
+        case "ArrowLeft":
+          newPlayerPosition = {
+            x: playerPosition.x - 1,
+            y: playerPosition.y
+          }
+          break;
+        case "ArrowUp":
+          newPlayerPosition = {
+            x: playerPosition.x,
+            y: playerPosition.y - 1
+          }
+          break;
+        case "ArrowDown":
+          newPlayerPosition = {
+            x: playerPosition.x,
+            y: playerPosition.y + 1
+          }
+          break;
+        default :
+          console.log('illegal ket')
+          return
+      }
+
+      if(newPlayerPosition != null && isLegalRoad(mazeArray, newPlayerPosition)){
+          clearPoint(playerPosition)
+          playerPosition = newPlayerPosition
+          renderPoint(playerPosition)
+      }
+
+      if(playerPosition.x == mazeArray[0].length - 1 && playerPosition.y == mazeArray.length - 2){
+        alert('you pass')
+      }
+
+    }
+</script>
+</body>
+</html>
