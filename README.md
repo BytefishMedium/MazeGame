@@ -54,3 +54,8 @@ If you intend to read this project, you can read it in this order:
 - ./game
   
   Finally, I add some small features and turn it into a small game.
+
+## Tutorial 
+If you want to read a detailed tutorial, you can go to my Medium page:
+
+

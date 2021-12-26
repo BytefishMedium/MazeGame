@@ -24,12 +24,9 @@
     let canvas = document.getElementById('canvas')
     let context = canvas.getContext('2d')
 
-    // 确保是正方形的，填充窗口却不会移除屏幕
     let borderWidth = Math.min(window.innerWidth, window.innerHeight)
-    // 确保至少500像素
     borderWidth = Math.max(borderWidth, 600)
 
-    // 重置canvas的宽度和高度
     canvas.width = borderWidth
     canvas.height = borderWidth
   </script>

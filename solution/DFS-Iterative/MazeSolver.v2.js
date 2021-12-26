@@ -1,7 +1,7 @@
 class MazeSolver {
 
   constructor (mazeArray,
-               entrancePosition = {x: 0, y: 1}, // 第2行，第1列
+               entrancePosition = {x: 0, y: 1},
                exitPosition = {x: mazeArray[0].length - 1, y: mazeArray.length - 2}
   ) {
     this.mazeArray = mazeArray
@@ -12,7 +12,6 @@ class MazeSolver {
 
     this.directions = [[1, 0], [0, 1], [-1, 0], [0, -1]]
 
-    // 和mazeArray一样大的二维数组，如果对应位置的值是true，表示这个坐标已经被访问过了
     this.visitedPositions = new Array(mazeArray.length)
     for (let index = 0; index < this.visitedPositions.length; index++) {
       this.visitedPositions[index] = new Array(mazeArray[index].length).fill(false)
@@ -21,22 +20,18 @@ class MazeSolver {
     // [{type: 'enter', position: {x:0, y:1}}, {type: 'exit', position: {x:1, y:1}}]
     this.detailedPath = []
 
-    // 用来记录位置的访问的位置的栈，用数组来模拟栈 [{x: 2, y: 3}]
     this.positionStack = []
   }
 
   isLegalRoad (x, y) {
-    // 横坐标是否溢出
     if (x < 0 || x >= this.mazeArray[0].length) {
       return false
     }
 
-    // 纵坐标是否超过边界
     if (y < 0 || y >= this.mazeArray.length) {
       return false
     }
 
-    // 是否是路，1代表墙
     if (this.mazeArray[y][x] === 1) {
       return false
     }

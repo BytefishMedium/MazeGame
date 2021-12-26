@@ -1,7 +1,7 @@
 class MazeGenerator {
   constructor (n, m, canvas) {
     if (n % 2 === 0 || m % 2 === 0)
-      throw new Error('n, m应该是奇数')
+      throw new Error('N and M should be odd')
 
     this.n = n
     this.m = m

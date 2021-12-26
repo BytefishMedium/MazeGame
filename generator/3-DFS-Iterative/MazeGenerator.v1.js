@@ -1,7 +1,7 @@
 class MazeGenerator {
   constructor (n, m, canvas) {
     if (n % 2 === 0 || m % 2 === 0)
-      throw new Error('n, m应该是奇数')
+      throw new Error('N and M should be odd')
 
     this.n = n
     this.m = m
@@ -61,7 +61,6 @@ class MazeGenerator {
 
     this.context.beginPath()
 
-    // 每个正方形的变长是4，横坐标是j*4，纵坐标是i*4
     this.context.rect(x * itemWidth, y * itemHeight, itemWidth, itemHeight)
 
     this.context.fillStyle = color

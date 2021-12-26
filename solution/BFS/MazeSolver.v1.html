@@ -25,12 +25,10 @@
   let canvas = document.getElementById('canvas')
   let context = canvas.getContext('2d')
 
-  // 确保是正方形的，填充窗口却不会移除屏幕
   let borderWidth = Math.min(window.innerWidth, window.innerHeight)
-  // 确保至少500像素
   borderWidth = Math.max(borderWidth, 600)
 
-  // 重置canvas的宽度和高度
+  // set width adn width of canvas
   canvas.width = borderWidth
   canvas.height = borderWidth
 
@@ -42,7 +40,6 @@
       for (let j = 0; j < mazeArray[i].length; j++) {
         context.beginPath()
 
-        // 每个正方形的变长是4，横坐标是j*4，纵坐标是i*4
         context.rect(j * roadWidth, i * roadHeight, roadWidth, roadHeight)
 
         context.fillStyle = mazeArray[i][j] === 0 ? 'white' : '#3581fc'
@@ -63,7 +60,6 @@
   path.forEach(position => {
     context.beginPath()
 
-    // 每个正方形的变长是4，横坐标是j*4，纵坐标是i*4
     context.rect(position.x * roadWidth, position.y * roadHeight, roadWidth, roadHeight)
 
     context.fillStyle = 'yellow'

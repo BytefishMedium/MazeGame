@@ -1,13 +1,11 @@
 class MazeGenerator {
   /**
    *
-   * @param {*} n 迷宫的宽度 要求是奇数
-   * @param {*} m 迷宫的长度 要求是偶数
    * @param canvas
    */
   constructor (n, m, canvas) {
     if (n % 2 === 0 || m % 2 === 0)
-      throw new Error('n, m应该是奇数')
+      throw new Error('N and M should be odd')
 
     this.n = n
     this.m = m
@@ -22,7 +20,6 @@ class MazeGenerator {
       [0, -1]
     ]
 
-    // 树的起点和终点
     this.startPosition = {x: 0, y: 1}
     this.endPosition = {x: n - 1, y: m - 2}
 
@@ -34,7 +31,6 @@ class MazeGenerator {
     this.mazeArray[this.endPosition.y][this.endPosition.x] = 0
     this.initRoad()
 
-    // 和mazeArray一样大的二维数组，如果对应位置的值是true，表示这个坐标已经被访问过了
     this.visitedPositions = new Array(this.mazeArray.length)
     for (let index = 0; index < this.visitedPositions.length; index++) {
       this.visitedPositions[index] = new Array(this.mazeArray[index].length).fill(false)
@@ -43,7 +39,6 @@ class MazeGenerator {
     this.positionQueue = []
   }
 
-  // 每个奇数行的奇数列，设置为road
   initRoad () {
     for (let i = 1; i < this.mazeArray[0].length; i = i + 2) {
       for (let j = 1; j < this.mazeArray.length; j = j + 2) {
@@ -52,18 +47,11 @@ class MazeGenerator {
     }
   }
 
-  /**
-   * 首先这个点应该在迷宫，其次这个点应该是路，对应的数值是0
-   * @param {*} x 点的横坐标
-   * @param {*} y 点的纵坐标
-   */
   inArea (x, y) {
-    // 横坐标是否溢出
     if (x < 0 || x >= this.mazeArray[0].length) {
       return false
     }
 
-    // 纵坐标是否超过边界
     if (y < 0 || y >= this.mazeArray.length) {
       return false
     }
@@ -77,7 +65,6 @@ class MazeGenerator {
 
     this.context.beginPath()
 
-    // 每个正方形的变长是4，横坐标是j*4，纵坐标是i*4
     this.context.rect(x * itemWidth, y * itemHeight, itemWidth, itemHeight)
 
     this.context.fillStyle = color
@@ -91,7 +78,6 @@ class MazeGenerator {
     this.visitedPositions[1][1] = true
 
     while (this.positionQueue.length !== 0) {
-      // 深度右边遍历不能这样玩，有顺序要求的
       //let currentPosition = this.positionQueue.pop()
       let randomIndex = Math.floor(Math.random() * this.positionQueue.length)
       let currentPosition = this.positionQueue.splice(randomIndex, 1)[0]
@@ -116,7 +102,6 @@ class MazeGenerator {
     this.visitedPositions[1][1] = true
 
     while (this.positionQueue.length !== 0) {
-      // 深度右边遍历不能这样玩，有顺序要求的
       //let currentPosition = this.positionQueue.pop()
       let randomIndex = Math.floor(Math.random() * this.positionQueue.length)
       let currentPosition = this.positionQueue.splice(randomIndex, 1)[0]
