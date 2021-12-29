@@ -10,7 +10,7 @@ class MazeSolver {
     this.entrancePosition = entrancePosition
     this.exitPosition = exitPosition
 
-    this.directions = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+    this.directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]
 
     this.visitedPositions = new Array(mazeArray.length)
     for (let index = 0; index < this.visitedPositions.length; index++) {
@@ -96,7 +96,7 @@ function test () {
   mazeSolver.solveMaze()
   console.log(mazeSolver.detailedPath)
 }
-// test()
+test()
 
 function test2 () {
   let mazeArray2 = require('../../maze_files/mazeArray101.node.js')
