@@ -56,6 +56,6 @@ If you intend to read this project, you can read it in this order:
   Finally, I add some small features and turn it into a small game.
 
 ## Tutorial 
-If you want to get a detailed tutorial, you can go to my Medium page:
+If you want to read a detailed tutorial, you can go to my Medium page:
 
 [Algorithm Visualization: Maze Generation and Solution](https://medium.com/p/82308c12d50c)
